@@ -1,3 +1,10 @@
+//
+//  Day.swift
+//  Some Year Some Day
+//
+//  Created by Henry Stephen on 2026/1/20.
+//
+
 import Foundation
 
 public struct Day: Identifiable, Hashable {

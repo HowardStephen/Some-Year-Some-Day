@@ -1,3 +1,10 @@
+//
+//  WeekSelectorViewModel.swift
+//  Some Year Some Day
+//
+//  Created by Henry Stephen on 2026/1/20.
+//
+
 import Foundation
 import SwiftUI
 import Combine

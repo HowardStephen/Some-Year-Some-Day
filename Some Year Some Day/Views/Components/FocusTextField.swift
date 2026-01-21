@@ -1,3 +1,10 @@
+//
+//  FocusTextField.swift
+//  Some Year Some Day
+//
+//  Created by Henry Stephen on 2026/1/20.
+//
+
 import SwiftUI
 
 // A small UIViewRepresentable to control first responder behavior for a TextField.

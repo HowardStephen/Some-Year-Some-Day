@@ -28,6 +28,41 @@ struct ContentView: View {
                 )
                 .zIndex(2)
 
+                Spacer().frame(height: 8)
+                
+                // 在顶部下方显示当前参考日期（或选中日期）并放置回到今天按钮（更靠上）
+                HStack(alignment: .center) {
+                    Text({
+                        let df = DateFormatter()
+                        df.locale = Locale(identifier: "zh_CN")
+                        df.dateFormat = "yyyy年M月d日"
+                        let d = viewModel.selectedDate ?? viewModel.referenceDate
+                        return df.string(from: d)
+                    }())
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+
+                    Spacer()
+
+                    Button(action: {
+                        // 选择今天的 startOfDay，确保和 WeekSelector 的天对齐
+                        let calendar = viewModel.calendar
+                        let todayStart = calendar.startOfDay(for: Date())
+                        viewModel.select(date: todayStart)
+                    }) {
+                        HStack(spacing: 5) {
+                            Image(systemName: "arrowshape.turn.up.backward")
+                            Text("回到今天")
+                                .bold()
+                        }
+                        .foregroundStyle(.secondary)
+                        .font(.subheadline)
+                    }
+                    .buttonStyle(.plain)
+                }
+                .padding(.horizontal)
+                .offset(y: 5)
+
                 // 主体内容可以在搜索时模糊
                 VStack(spacing: 12) {
                     HStack {
@@ -56,13 +91,25 @@ struct ContentView: View {
                     }
                     .padding(.horizontal, 6)
 
+                    // 日志卡片列表
+                    ScrollView(.vertical, showsIndicators: false) {
+                        LazyVStack(spacing: 0) {
+                            ForEach(viewModel.diaryEntriesForDisplayedDate) { diary in
+                                DiaryCardView(model: diary)
+                                    .onTapGesture {
+                                        viewModel.openDiaryDetail(diary)
+                                    }
+                            }
+                        }
+                        .padding(.top, 6)
+                    }
+                    .offset(y: -18)
+
                     Spacer()
                 }
                 .blur(radius: viewModel.isSearching ? 8 : 0)
                 .disabled(viewModel.isSearching)
                 .animation(.easeInOut, value: viewModel.isSearching)
-
-                Spacer()
             }
 
             // dim overlay when searching
@@ -102,7 +149,7 @@ struct ContentView: View {
                 .padding(.leading, 20)
                 .padding(.top, 20)
 
-                // 将日期选择器的 locale 设置为中文（使月份显示为 1月/2月/...）
+                // 将日期选择器的 locale设置为中文（使月份显示为 1月/2月/...）
                 DatePicker("", selection: $viewModel.pickerDate, in: ...Date(), displayedComponents: .date)
                     .datePickerStyle(.wheel)
                     .labelsHidden()

@@ -1,3 +1,10 @@
+//
+//  DiaryCardView.swift
+//  Some Year Some Day
+//
+//  Created by Henry Stephen on 2026/1/20.
+//
+
 import SwiftUI
 
 // Model representing the data needed by the diary card UI
@@ -80,12 +87,9 @@ public struct DiaryCardView: View {
             Spacer(minLength: 8)
         }
         .padding(.trailing, 12)
-        .background(
-            RoundedRectangle(cornerRadius: 14, style: .continuous)
-                .fill(Color(UIColor.systemBackground))
-                .background(.ultraThinMaterial)
-                .shadow(color: Color.black.opacity(0.03), radius: 6, x: 0, y: 3)
-        )
+        // Use material clipped to a rounded rectangle to avoid visible corner artifacts
+        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+        .shadow(color: Color.black.opacity(0.03), radius: 6, x: 0, y: 3)
         .overlay(
             RoundedRectangle(cornerRadius: 14, style: .continuous)
                 .stroke(Color(.systemGray4).opacity(0.06), lineWidth: 0.5)

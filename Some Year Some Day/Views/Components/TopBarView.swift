@@ -1,3 +1,10 @@
+//
+//  TopBarView.swift
+//  Some Year Some Day
+//
+//  Created by Henry Stephen on 2026/1/18.
+//
+
 import SwiftUI
 
 // 顶部栏组件：左/右 LiquidGlass 按钮 + 居中标题

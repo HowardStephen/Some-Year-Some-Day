@@ -1,8 +1,16 @@
+//
+//  LiquidGlassTextButton.swift
+//  Some Year Some Day
+//
+//  Created by Henry Stephen on 2026/1/20.
+//
+
 import SwiftUI
 
 // A text variant of the LiquidGlassButton for small cancel buttons
 struct LiquidGlassTextButton: View {
     var text: String
+    var systemName: String? = nil
     var height: CGFloat = 36
     var accent: Color? = nil
     var action: () -> Void = {}
@@ -17,13 +25,18 @@ struct LiquidGlassTextButton: View {
                 action()
             }
         }) {
-            Text(text)
-                .font(.subheadline)
-                .bold()
-                .foregroundColor(accent != nil ? .white : .primary)
-                .frame(height: height)
-                .padding(.horizontal, 12)
-                .background(RoundedRectangle(cornerRadius: height / 2, style: .continuous).fill(accent ?? Color(UIColor.systemBackground).opacity(0.001)))
+            HStack(spacing: 8) {
+                if let name = systemName {
+                    Image(systemName: name)
+                }
+                Text(text)
+                    .bold()
+            }
+            .font(.subheadline)
+            .foregroundColor(accent != nil ? .white : .primary)
+            .frame(height: height)
+            .padding(.horizontal, 12)
+            .background(RoundedRectangle(cornerRadius: height / 2, style: .continuous).fill(accent ?? Color(UIColor.systemBackground).opacity(0.001)))
         }
         .buttonStyle(.plain)
         .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: height / 2, style: .continuous))

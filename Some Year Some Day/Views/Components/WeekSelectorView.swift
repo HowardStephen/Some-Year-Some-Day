@@ -1,3 +1,10 @@
+//
+//  WeekSelectorView.swift
+//  Some Year Some Day
+//
+//  Created by Henry Stephen on 2026/1/18.
+//
+
 import SwiftUI
 
 struct WeekSelectorView: View {
@@ -32,7 +39,16 @@ struct WeekSelectorView: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 10) {
                     ForEach(weekDays, id: \.self) { date in
-                        Button(action: { onSelect(date) }) {
+                        Button(action: {
+                            // If user taps a date after today, redirect to today instead of selecting a future date
+                            let todayStart = calendar.startOfDay(for: Date())
+                            let tappedStart = calendar.startOfDay(for: date)
+                            if tappedStart > todayStart {
+                                onSelect(todayStart)
+                            } else {
+                                onSelect(date)
+                            }
+                        }) {
                             VStack(spacing: 4) {
                                 Text(dayLabel(for: date))
                                     .font(.caption)

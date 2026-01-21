@@ -1,3 +1,10 @@
+//
+//  LiquidGlassButton.swift
+//  Some Year Some Day
+//
+//  Created by Henry Stephen on 2026/1/18.
+//
+
 import SwiftUI
 
 // 可复用的 Liquid glass 风格按钮（支持圆形与圆角矩形）

@@ -1,3 +1,10 @@
+//
+//  ContentViewModel.swift
+//  Some Year Some Day
+//
+//  Created by Henry Stephen on 2026/1/20.
+//
+
 import Foundation
 import SwiftUI
 import Combine
@@ -36,6 +43,12 @@ final class ContentViewModel: ObservableObject {
     @Published var selectedDiary: DiaryCardModel? = nil
     @Published var showDiaryDetail: Bool = false
 
+    // Filtered diary entries for UI: only show entries matching the currently displayed date
+    var displayedDate: Date { selectedDate ?? referenceDate }
+    var diaryEntriesForDisplayedDate: [DiaryCardModel] {
+        diaryEntries.filter { calendar.isDate($0.timestamp, inSameDayAs: displayedDate) }
+    }
+
     var weekDays: [Date] {
         guard let weekInterval = calendar.dateInterval(of: .weekOfYear, for: referenceDate) else { return [] }
         return (0..<7).compactMap { calendar.date(byAdding: .day, value: $0, to: weekInterval.start) }
@@ -69,9 +82,11 @@ final class ContentViewModel: ObservableObject {
 
     // MARK: - Actions
     func select(date: Date) {
+        // Normalize to start of day to keep comparisons consistent
+        let normalized = calendar.startOfDay(for: date)
         withAnimation(.spring(response: 0.28, dampingFraction: 0.75)) {
-            selectedDate = date
-            referenceDate = date
+            selectedDate = normalized
+            referenceDate = normalized
         }
     }
 
@@ -84,6 +99,13 @@ final class ContentViewModel: ObservableObject {
         referenceDate = pickerDate
         selectedDate = pickerDate
         showDatePicker = false
+    }
+
+    // Jump to today's start-of-day and update state
+    func goToToday() {
+        let todayStart = calendar.startOfDay(for: Date())
+        today = todayStart
+        select(date: todayStart)
     }
 
     // MARK: - Search helpers
