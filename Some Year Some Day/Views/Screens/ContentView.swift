@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @ObservedObject var viewModel: ContentViewModel
     var calendar: Calendar = Calendar.current
+    @State private var isShowingKeepDiary: Bool = false
 
     var body: some View {
         ZStack {
@@ -112,6 +113,11 @@ struct ContentView: View {
                 .animation(.easeInOut, value: viewModel.isSearching)
             }
 
+            // Hidden programmatic navigation link for pushing KeepDiaryView
+            NavigationLink(destination: KeepDiaryView(), isActive: $isShowingKeepDiary) {
+                EmptyView()
+            }
+
             // dim overlay when searching
             if viewModel.isSearching {
                 Color.white.opacity(0.6)
@@ -128,8 +134,10 @@ struct ContentView: View {
                 HStack {
                     Spacer()
                     LiquidGlassButton(systemName: "square.and.pencil", size: 54, isCircular: true, accent: Color.accentColor) {
-                        // new diary
+                        print("DEBUG: LiquidGlassButton tapped — setting isShowingKeepDiary")
+                        isShowingKeepDiary = true
                     }
+                    .zIndex(3)
                     .padding(.trailing, 24)
                     .padding(.bottom, 10)
                 }
@@ -206,5 +214,7 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView(viewModel: ContentViewModel())
+    NavigationStack {
+        ContentView(viewModel: ContentViewModel())
+    }
 }

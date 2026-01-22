@@ -14,8 +14,10 @@ struct Some_Year_Some_DayApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView(viewModel: appViewModel.contentViewModel)
-                .environmentObject(appViewModel)
+            NavigationStack {
+                ContentView(viewModel: appViewModel.contentViewModel)
+                    .environmentObject(appViewModel)
+            }
         }
     }
 }
